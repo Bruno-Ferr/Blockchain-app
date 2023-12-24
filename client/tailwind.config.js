@@ -1,8 +1,33 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: ["./src/**/*.{html,tsx,ts,js,jsx}"],
-  theme: {
+  purge: ["./src/**/*.{js,jsx,ts,tsx}", "./public/index.html"],
+  mode: "jit",
+  media: false, // or 'media' or 'class'
+  theme: {   
+    extend: {
+      screens: {
+        mf: "990px",
+      },
+      keyframes: {
+        "slide-in": {
+          "0%": {
+            "-webkit-transform": "translateX(120%)",
+            transform: "translateX(120%)",
+          },
+          "100%": {
+            "-webkit-transform": "translateX(0%)",
+            transform: "translateX(0%)",
+          },
+        },
+      },
+      animation: {
+        "slide-in": "slide-in 0.5s ease-out",
+      },
+    },
+  },
+  variants: {
     extend: {},
   },
   plugins: [],
+
 }
