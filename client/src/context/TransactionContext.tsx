@@ -13,7 +13,7 @@ const getEthereumContract = async () => {
   const provider = new ethers.BrowserProvider(ethereum);
   const signer = await provider.getSigner();
   const transactionContract = new ethers.Contract('0x2e0194144A6b972666d221d896560eD4eDcc3784', contractABI, signer);
-  console.log(transactionContract)
+  
   return transactionContract
 }
 
@@ -77,18 +77,17 @@ export const TransactionProvider = ({children}: TransactionProviderProps) => {
           value: ethers.hexlify('0x'+parsedAmount),
         }]
       });
+      const transactionHash = await transactionContract.addToBlockchain( addressTo, ethers.hexlify('0x'+parsedAmount), keyword, message);
       
-      const transactionHash = await transactionContract.addToBlockchain( addressTo, amount, keyword, message);
-
       setIsLoading(true);
-      console.log(`loading - ${transactionHash}`);
+      console.log(transactionHash);
       await transactionHash.wait();
       setIsLoading(true);
-      console.log(`success - ${transactionHash}`);
 
-      const transactionCount = await transactionContract.getTransactionCount();
 
-      setTransactionCount(parseInt(transactionCount))
+      const transactionCount = await transactionContract.getTransactionCount(); //No ethereum object
+
+      setTransactionCount(transactionCount.toNumber())
     } catch (error) {
       throw new Error("No Ethereum object.")
     }
